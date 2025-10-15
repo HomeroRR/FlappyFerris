@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Bevy Web App</title>
-  </head>
-  <body>
-    <canvas id="bevy-canvas"></canvas>
-    <script type="module">
-      // Import the generated JS wrapper module
-      import init from './flappy_bird.js';
-      async function run() {
-        // Wait for the WASM module to be initialized
-        await init();
+
+<head>
+  <title>Bevy Web App</title>
+</head>
+
+<body>
+  <canvas id="bevy-canvas"></canvas>
+
+  <script type="module">
+    // Import the generated JS wrapper module
+    import init from './flappy_bird.js';
+    import emitSpacebarPress from './emit_space_press.js';
+
+    async function run() {
+      try {
+        await init(); // Wait for the WASM module to be initialized
+        const canvas = document.querySelector("[alt='Flappy Bird']");
+        document.body.addEventListener("click", () => emitSpacebarPress(canvas))
+        document.body.addEventListener("touchstart", () => emitSpacebarPress(canvas))
+      } catch (error) {
+        console.error(error)
       }
-      run();
-    </script>
-  </body>
+    }
+    run();
+  </script>
+</body>
+
 </html>
