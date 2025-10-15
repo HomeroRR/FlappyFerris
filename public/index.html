@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bevy Web App</title>
+  </head>
+  <body>
+    <canvas id="bevy-canvas"></canvas>
+    <script type="module">
+      // Import the generated JS wrapper module
+      import init from './flappy_bird.js';
+      async function run() {
+        // Wait for the WASM module to be initialized
+        await init();
+      }
+      run();
+    </script>
+  </body>
+</html>

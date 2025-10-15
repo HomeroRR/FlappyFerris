@@ -1,0 +1,12 @@
+[package]
+name = "flappy_bird"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bevy = { version = "0.16.0"}
+rand = "0.9.1"
+getrandom = { version = "0.3", features = ["wasm_js"] }
+
+[profile.dev]
+opt-level = 1
