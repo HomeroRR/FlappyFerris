@@ -5,7 +5,7 @@
   <title>Bevy Web App</title>
 </head>
 
-<body style="margin: 0px">
+<body style="margin: 0px; background-color: #80b2cc;">
   <script type="module">
     import init from './flappy_bird.js'; // Import the generated JS wrapper module
     import emitSpacebarPress from './emit_space_press.js';
@@ -16,11 +16,12 @@
         await init(); // Wait for the WASM module to be initialized
         const canvas = document.querySelector("[alt='Flappy Bird']");
         // Respond to touch/click events
-        document.body.addEventListener("click", () => emitSpacebarPress(canvas))
-        document.body.addEventListener("touchstart", () => emitSpacebarPress(canvas))
+        canvas.addEventListener("click", () => emitSpacebarPress(canvas))
+        canvas.addEventListener("touchstart", () => emitSpacebarPress(canvas))
         // Resize canvas to fit screen
-        fitElementToScreen(canvas);
-        window.addEventListener('resize', () => fitElementToScreen(canvas));
+        canvas.style.display = "block";
+        setTimeout(() => fitElementToScreen(canvas), 0)
+        window.addEventListener('resize', () => setTimeout(() => fitElementToScreen(canvas), 0));
       } catch (error) {
         console.error(error)
       }
