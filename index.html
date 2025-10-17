@@ -2,10 +2,26 @@
 <html>
 
 <head>
-  <title>Bevy Web App</title>
+  <link rel="icon" type="image/png" href="./favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="shortcut icon" href="./favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="Flappy Ferris" />
+  <link rel="manifest" href="./site.webmanifest" />
+  <title>Flappy Ferris - Bevy Web App</title>
+  <style>
+    :root {
+      --blue-sky-color: #80b2cc;
+    }
+
+    body {
+      margin: 0px;
+      background-color: var(--blue-sky-color), steelblue;
+    }
+  </style>
 </head>
 
-<body style="margin: 0px; background-color: #80b2cc;">
+<body>
   <script type="module">
     import init from './flappy_bird.js'; // Import the generated JS wrapper module
     import emitSpacebarPress from './emit_space_press.js';
