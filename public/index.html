@@ -10,40 +10,107 @@
   <link rel="manifest" href="./site.webmanifest" />
   <title>Flappy Ferris - Bevy Web App</title>
   <style>
-    :root {
-      --blue-sky-color: #80b2cc;
-    }
-
     body {
       margin: 0px;
-      background-color: var(--blue-sky-color), steelblue;
+      /* blue sky color */
+      background: #80b2cc !important;
+    }
+
+    #app {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #game-menu ul {
+      list-style-type: none;
+      /* This removes the bullets */
+      padding: 0;
+      /* Optional: Remove default padding */
+      margin: 0;
+      /* Optional: Remove default margin */
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    #loader {
+      font-size: xx-large;
+      font-weight: bold;
     }
   </style>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script defer src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 
 <body>
+  <div id="app">
+    <section v-if="showMenu" id="game-menu">
+      <div>
+        <h1> Flappy Ferris</h1>
+        <div>
+          This game is a variant of Flappy Bird written in Rust using Bevy compiled to WASM.
+        </div>
+        <div>
+          <ul>
+            Made by:
+            <li>Homero Roman</li>
+            <li>Frederick Roman</li>
+          </ul>
+        </div>
+        <div>
+          <button @click="play"> PLAY </button>
+        </div>
+      </div>
+    </section>
+    <section v-else-if="isLoading" v-cloak id="loader"> Loading... </section>
+  </div>
+
   <script type="module">
     import init from './flappy_bird.js'; // Import the generated JS wrapper module
     import emitSpacebarPress from './emit_space_press.js';
     import fitElementToScreen from './fit_element_to_screen.js'
 
-    async function run() {
-      try {
-        await init(); // Wait for the WASM module to be initialized
-        const canvas = document.querySelector("[alt='Flappy Bird']");
-        // Respond to touch/click events
-        canvas.addEventListener("click", () => emitSpacebarPress(canvas))
-        canvas.addEventListener("touchstart", () => emitSpacebarPress(canvas))
-        // Resize canvas to fit screen
-        canvas.style.display = "block";
-        setTimeout(() => fitElementToScreen(canvas), 0)
-        window.addEventListener('resize', () => setTimeout(() => fitElementToScreen(canvas), 0));
-      } catch (error) {
-        console.error(error)
+    const app = Vue.createApp({
+      data() {
+        return {
+          showMenu: true,
+          isLoading: false,
+        };
+      },
+      methods: {
+        async run() {
+          try {
+            this.isLoading = true;
+            await init(); // Wait for the WASM module to be initialized
+            const canvas = document.querySelector("[alt='Flappy Bird']");
+            // Respond to touch/click events
+            canvas.addEventListener("click", () => emitSpacebarPress(canvas))
+            canvas.addEventListener("touchstart", () => emitSpacebarPress(canvas))
+            // Resize canvas to fit screen
+            canvas.style.display = "block";
+            setTimeout(() => fitElementToScreen(canvas), 0)
+            window.addEventListener('resize', () => setTimeout(() => fitElementToScreen(canvas), 0));
+          } catch (error) {
+            console.error(error)
+          } finally {
+            this.isLoading = false;
+          }
+        },
+        async play() {
+          try {
+            this.showMenu = false;
+            await this.run();
+          } catch (error) {
+            console.error(error)
+          }
+        }
       }
-    }
+    });
 
-    run();
+    app.mount('#app');
   </script>
 </body>
 
