@@ -94,7 +94,12 @@
         </div>
       </div>
     </section>
-    <div v-else-if="isLoading" v-cloak id="loader"> Loading... </div>
+    <div v-else-if="isLoading" v-cloak id="loader">
+      <figure>
+        <img src="./assets/bevy_logo.svg" alt="Trulli" style="width:320px">
+        <figcaption> Loading... </figcaption>
+      </figure>
+    </div>
   </main>
 
   <script type="module">
