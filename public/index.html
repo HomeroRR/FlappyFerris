@@ -32,8 +32,21 @@
       margin: 0;
     }
 
-    [v-cloak] {
-      display: none;
+    #game-menu ul li {
+      padding: 5px;
+      margin: 0px;
+      line-height: 75%;
+    }
+
+    #menu-card a {
+      text-decoration: none;
+      font-weight: 500;
+      color: green;
+    }
+
+    #play-button {
+      width: 100%;
+      font-weight: bold;
     }
 
     #loader {
@@ -41,27 +54,43 @@
       font-weight: bold;
     }
   </style>
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  </style>
 </head>
 
 <body id="app">
   <main ref="main">
     <section v-if="showMenu" class="card shadow" id="game-menu" style="width: 18rem;">
-      <div class="card-body">
+      <div class="card-body" id="menu-card">
         <h1 class="card-title text-center"> Flappy Ferris</h1>
         <hr>
         <!-- <img src="..." class="card-img-top" alt="..."> -->
-        <div class="my-4">
-          This game is a variant of Flappy Bird written in Rust using Bevy compiled to WASM.
+        <div class="my-4 text-center">
+          This game is a variant of
+          <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a>
+          written in
+          <a href="https://rust-lang.org/">Rust</a>
+          using <a href="https://bevy.org/">Bevy</a> compiled to
+          <a href="https://webassembly.org/">WASM</a>.
         </div>
+        <hr>
         <div class="my-4">
           <ul>
             Made by:
-            <li>Homero Roman</li>
-            <li>Frederick Roman</li>
+            <li>
+              <a href="https://homeroroman.com/">Homero Roman</a>
+            </li>
+            <li>
+              <a href="https://frederickroman.com/">Frederick Roman</a>
+            </li>
           </ul>
         </div>
+        <hr>
         <div class="text-center">
-          <button type="button" @click="play" class="btn btn-warning"> PLAY </button>
+          <button type="button" @click="play" class="btn btn-warning" id="play-button"> PLAY </button>
         </div>
       </div>
     </section>
