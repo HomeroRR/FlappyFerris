@@ -63,46 +63,48 @@
   </style>
 </head>
 
-<body id="app">
-  <main ref="main">
-    <section v-if="showMenu" class="card shadow" id="game-menu" style="width: 18rem;">
-      <div class="card-body" id="menu-card">
-        <h1 class="card-title text-center"> Flappy Ferris</h1>
-        <hr>
-        <!-- <img src="..." class="card-img-top" alt="..."> -->
-        <div class="my-4 text-center">
-          This game is a variant of
-          <a href="https://www.youtube.com/watch?v=_C28kqin94c">Flappy Bird</a>
-          written in
-          <a href="https://rust-lang.org/">Rust</a>
-          using <a href="https://bevy.org/">Bevy</a> compiled to
-          <a href="https://webassembly.org/">WASM</a>.
+<body>
+  <span id="app">
+    <main ref="main">
+      <section v-if="showMenu" class="card shadow" id="game-menu" style="width: 18rem;">
+        <div class="card-body" id="menu-card">
+          <h1 class="card-title text-center"> Flappy Ferris</h1>
+          <hr>
+          <!-- <img src="..." class="card-img-top" alt="..."> -->
+          <div class="my-4 text-center">
+            This game is a variant of
+            <a href="https://www.youtube.com/watch?v=_C28kqin94c">Flappy Bird</a>
+            written in
+            <a href="https://rust-lang.org/">Rust</a>
+            using <a href="https://bevy.org/">Bevy</a> compiled to
+            <a href="https://webassembly.org/">WASM</a>.
+          </div>
+          <hr>
+          <div class="my-4">
+            <ul>
+              Made by:
+              <li>
+                <a href="https://homeroroman.com/">Homero Roman</a>
+              </li>
+              <li>
+                <a href="https://frederickroman.com/">Frederick Roman</a>
+              </li>
+            </ul>
+          </div>
+          <hr>
+          <div class="text-center">
+            <button type="button" @click="play" class="btn btn-warning" id="play-button"> PLAY </button>
+          </div>
         </div>
-        <hr>
-        <div class="my-4">
-          <ul>
-            Made by:
-            <li>
-              <a href="https://homeroroman.com/">Homero Roman</a>
-            </li>
-            <li>
-              <a href="https://frederickroman.com/">Frederick Roman</a>
-            </li>
-          </ul>
-        </div>
-        <hr>
-        <div class="text-center">
-          <button type="button" @click="play" class="btn btn-warning" id="play-button"> PLAY </button>
-        </div>
+      </section>
+      <div v-else-if="isLoading" v-cloak id="loader">
+        <figure>
+          <img src="./assets/bevy_logo.svg" alt="Trulli" style="width:320px">
+          <figcaption> Loading... </figcaption>
+        </figure>
       </div>
-    </section>
-    <div v-else-if="isLoading" v-cloak id="loader">
-      <figure>
-        <img src="./assets/bevy_logo.svg" alt="Trulli" style="width:320px">
-        <figcaption> Loading... </figcaption>
-      </figure>
-    </div>
-  </main>
+    </main>
+  </span>
 
   <script type="module">
     import init from './flappy_bird.js'; // Import the generated JS wrapper module
@@ -136,7 +138,7 @@
           } catch (error) {
             console.error(error)
           } finally {
-            this.$refs.main.style.height = "auto";
+            this.$refs.main.style.display = "none";
             this.isLoading = false;
           }
         },
