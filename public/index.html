@@ -1,182 +1,293 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <link
+      rel="icon"
+      type="image/png"
+      href="./favicon-96x96.png"
+      sizes="96x96"
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./apple-touch-icon.png"
+    />
+    <meta name="apple-mobile-web-app-title" content="Flappy Ferris" />
+    <link rel="manifest" href="./site.webmanifest" />
+    <title>Flappy Ferris - Bevy Web App</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      defer
+      src="https://unpkg.com/vue@3/dist/vue.global.js"
+      integrity="sha384-o0XhjjchKAjA3RDDJZatNHsCZEyZGduAW1aoWEOks1/88a83+CPVAdJfYVcM6G/A"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      body {
+        margin: 0px;
+        /* blue sky color */
+        background: #80b2cc !important;
+      }
 
-<head>
-  <link rel="icon" type="image/png" href="./favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-  <link rel="shortcut icon" href="./favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
-  <meta name="apple-mobile-web-app-title" content="Flappy Ferris" />
-  <link rel="manifest" href="./site.webmanifest" />
-  <title>Flappy Ferris - Bevy Web App</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <script defer src="https://unpkg.com/vue@3/dist/vue.global.js"
-    integrity="sha384-o0XhjjchKAjA3RDDJZatNHsCZEyZGduAW1aoWEOks1/88a83+CPVAdJfYVcM6G/A"
-    crossorigin="anonymous"></script>
-  <style>
-    body {
-      margin: 0px;
-      /* blue sky color */
-      background: #80b2cc !important;
-    }
+      main {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-    main {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+      #game-menu ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
 
-    #game-menu ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
+      #game-title {
+        font-size: x-large;
+        font-family: "Press Start 2P", system-ui;
+      }
 
-    #game-title {
-      font-size: x-large;
-      font-family: "Press Start 2P", system-ui;
-    }
+      #game-menu ul li {
+        padding: 5px;
+        margin: 0px;
+        line-height: 75%;
+      }
 
-    #game-menu ul li {
-      padding: 5px;
-      margin: 0px;
-      line-height: 75%;
-    }
+      #menu-card a {
+        text-decoration: none;
+        font-weight: 500;
+        color: green;
+      }
 
-    #menu-card a {
-      text-decoration: none;
-      font-weight: 500;
-      color: green;
-    }
+      #play-button {
+        width: 100%;
+        font-weight: bold;
+      }
+    </style>
+    <style>
+      [v-cloak] {
+        display: none;
+      }
+    </style>
+    <style>
+      #loader-container {
+        font-size: xx-large;
+        font-weight: bold;
+      }
 
-    #play-button {
-      width: 100%;
-      font-weight: bold;
-    }
+      #loading-suspense-fallback {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        --light-color: #ececec;
+        --middle-color: #b2b2b2;
+        --dark-color: #787878;
+        --animation-duration: 0.5s;
+      }
 
-    #loader-container {
-      font-size: xx-large;
-      font-weight: bold;
-    }
-
-    #loading-suspense-fallback {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-  </style>
-  <style>
-    [v-cloak] {
-      display: none;
-    }
-  </style>
-</head>
-
-<body>
-  <span id="app">
-    <main ref="main">
-      <section v-if="showMenu" class="card shadow" id="game-menu" style="width: 18rem;">
-        <div class="card-body" id="menu-card">
-          <h1 class="card-title text-center" id="game-title"> Flappy Ferris</h1>
-          <hr>
-          <img src="./assets/game_screenshot.png" class="card-img-top" alt="Flappy Ferris game screenshot">
-          <div class="my-4 text-center">
-            This game is a variant of
-            <a href="https://www.youtube.com/watch?v=_C28kqin94c">Flappy Bird</a>
-            written in
-            <a href="https://rust-lang.org/">Rust</a>
-            using <a href="https://bevy.org/">Bevy</a> compiled to
-            <a href="https://webassembly.org/">WASM</a>.
-          </div>
-          <hr>
-          <div class="my-4">
-            <ul>
-              Made by:
-              <li>
-                <a href="https://homeroroman.com/">Homero Roman</a>
-              </li>
-              <li>
-                <a href="https://frederickroman.com/">Frederick Roman</a>
-              </li>
-            </ul>
-          </div>
-          <hr>
-          <div class="text-center">
-            <button type="button" @click="play" class="btn btn-warning" id="play-button"> PLAY </button>
-          </div>
-        </div>
-      </section>
-      <section v-else-if="isLoading" v-cloak id="loader-container">
-        <figure id="loading-suspense-fallback">
-          <img src="./assets/bevy_logo.svg" alt="Bevy logo" style="width:320px">
-          <figcaption> Loading... </figcaption>
-          <div class="spinner-border" role="status">
-            <span class="sr-only"></span>
-          </div>
-        </figure>
-      </section>
-    </main>
-  </span>
-
-  <script type="module">
-    import init from './flappy_bird.js'; // Import the generated JS wrapper module
-    import emitSpacebarPress from './emit_space_press.js';
-    import fitElementToScreen from './fit_element_to_screen.js'
-
-    const app = Vue.createApp({
-      data() {
-        return {
-          showMenu: true /** @type {boolean} */,
-          isLoading: false /** @type {boolean} */,
-        };
-      },
-      methods: {
-        /**
-          * Initializes WASM module and sets up game canvas to full screen.
-          * @returns {Promise<void>}
-          */
-        async run() {
-          try {
-            this.isLoading = true;
-            await init(); // Wait for the WASM module to be initialized
-            const canvas = document.querySelector("[alt='Flappy Bird']");
-            // Respond to touch/click events
-            canvas.addEventListener("click", () => emitSpacebarPress(canvas))
-            canvas.addEventListener("touchstart", () => emitSpacebarPress(canvas))
-            // Resize canvas to fit screen
-            canvas.style.display = "block";
-            setTimeout(() => fitElementToScreen(canvas), 0)
-            window.addEventListener('resize', () => setTimeout(() => fitElementToScreen(canvas), 0));
-          } catch (error) {
-            console.error(error)
-          } finally {
-            this.$refs.main.style.display = "none";
-            this.isLoading = false;
-          }
-        },
-        /**
-          * Closes the game menu and runs the game.
-          * @returns {Promise<void>}
-          */
-        async play() {
-          try {
-            this.showMenu = false;
-            await this.run();
-          } catch (error) {
-            console.error(error)
-          }
+      @keyframes fade-front {
+        0%,
+        100% {
+          fill: var(--light-color);
+        }
+        33% {
+          fill: var(--dark-color);
+        }
+        66% {
+          fill: var(--middle-color);
         }
       }
-    });
 
-    app.mount('#app');
-  </script>
-</body>
+      @keyframes fade-middle {
+        0%,
+        100% {
+          fill: var(--middle-color);
+        }
+        33% {
+          fill: var(--light-color);
+        }
+        66% {
+          fill: var(--dark-color);
+        }
+      }
 
+      @keyframes fade-back {
+        0%,
+        100% {
+          fill: var(--dark-color);
+        }
+        33% {
+          fill: var(--middle-color);
+        }
+        66% {
+          fill: var(--light-color);
+        }
+      }
+
+      #front-bird {
+        animation: fade-front var(--animation-duration) infinite ease-in-out;
+      }
+
+      #middle-bird {
+        animation: fade-middle var(--animation-duration) infinite ease-in-out;
+      }
+
+      #back-bird {
+        animation: fade-back var(--animation-duration) infinite ease-in-out;
+      }
+    </style>
+  </head>
+
+  <body>
+    <span id="app">
+      <main ref="main">
+        <section
+          v-if="showMenu"
+          class="card shadow"
+          id="game-menu"
+          style="width: 18rem"
+        >
+          <div class="card-body" id="menu-card">
+            <h1 class="card-title text-center" id="game-title">
+              Flappy Ferris
+            </h1>
+            <hr />
+            <img
+              src="./assets/game_screenshot.png"
+              class="card-img-top"
+              alt="Flappy Ferris game screenshot"
+            />
+            <div class="my-4 text-center">
+              This game is a variant of
+              <a href="https://www.youtube.com/watch?v=_C28kqin94c"
+                >Flappy Bird</a
+              >
+              written in
+              <a href="https://rust-lang.org/">Rust</a>
+              using <a href="https://bevy.org/">Bevy</a> compiled to
+              <a href="https://webassembly.org/">WASM</a>.
+            </div>
+            <hr />
+            <div class="my-4">
+              <ul>
+                Made by:
+                <li>
+                  <a href="https://homeroroman.com/">Homero Roman</a>
+                </li>
+                <li>
+                  <a href="https://frederickroman.com/">Frederick Roman</a>
+                </li>
+              </ul>
+            </div>
+            <hr />
+            <div class="text-center">
+              <button
+                type="button"
+                @click="play"
+                class="btn btn-warning"
+                id="play-button"
+              >
+                PLAY
+              </button>
+            </div>
+          </div>
+        </section>
+        <section v-else-if="isLoading" v-cloak id="loader-container">
+          <figure id="loading-suspense-fallback">
+            <svg
+              width="320px"
+              viewBox=".374 .272 46.385 34.394"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m40.143 15.826h-.011a9.231 9.231 0 0 0 -.462 2.499c-.066 1.747.111 2.81-.09 3.942-.2 1.132-.795 2.246-2.308 3.993-1.8 2.08-4.652 3.688-7.948 4.232-.613.392-1.26.75-1.941 1.07 2.565.965 5.247 1.018 7.373.32 3.746-1.229 3.456-2.112 5.135-4.684a8.6 8.6 0 0 1 1.752-1.937c1.747.762 3.467 1.25 4.54 1.13.576-1.337-.015-2.886-.996-4.35.805-2.5-.416-5.003-3.12-5.888-.706-.231-1.34-.34-1.924-.328zm2.03 3.67a1.022 1.04 48.68 0 1 .783.342 1.022 1.04 48.68 0 1 -.107 1.455 1.022 1.04 48.68 0 1 -1.456-.08 1.022 1.04 48.68 0 1 .107-1.455 1.022 1.04 48.68 0 1 .672-.262zm-16.763 11.124c.03.018.063.034.094.052l.097-.037z"
+                id="back-bird"
+              />
+              <path
+                d="m36.433 6.26a6.04 6.04 0 0 0 -1.466.155l-.098.026a25.878 25.878 0 0 1 -1.846 1.646c.215.947.533 1.933 1.096 2.943.978 1.752 1.784 2.688 2.257 3.904s.555 2.646.116 5.252c-.544 3.23-2.51 6.652-5.629 9.177 2.42-.706 4.483-2.008 5.85-3.586 1.473-1.703 1.965-2.666 2.138-3.637.172-.97.01-2.034.08-3.84.043-1.163.291-2.18.606-3.075l.076-.215.226-.03c2.017-.261 3.84-.776 4.783-1.384-.303-1.361-1.589-2.418-3.292-3.22l-.162-.077-.041-.175c-.54-2.32-2.351-3.815-4.694-3.864zm1.172 2.865a1.182 1.205 17.73 0 1 .355.055 1.182 1.205 17.73 0 1 .76 1.507 1.182 1.205 17.73 0 1 -1.494.788 1.182 1.205 17.73 0 1 -.759-1.507 1.182 1.205 17.73 0 1 1.138-.843z"
+                id="middle-bird"
+              />
+              <path
+                d="m26.688.28c-1.464-.008-2.966.576-4.256 1.83-1.695 1.645-2.221 3.126-1.924 4.975l.081.507-.506-.083c-3.724-.603-8.332-.298-13.575 1.823 1.542.66 4.37 1.763 7.51 3.27l.995.479-1.082.22c-4.145.84-9.064 3.267-13.557 8.563 2.01-.156 6.118-.64 10.402-.633 2.381.004 4.728.169 6.64.665 1.912.495 3.65 1.63 3.894 2.461s.106 1.269-.135 1.92-.983 1.637-2.01 2.29-2.327 1.222-3.68 1.706c-2.705.969-5.584 1.588-6.855 1.706-.27.025-.379.122-.483.311-.104.19-.161.486-.17.797-.01.415.054.632.17.796s.3.23.49.243c7.987.54 13.96-1.47 18.297-3.19 4.99-2.288 8.143-6.805 8.827-10.872.43-2.549.337-3.798-.076-4.861-.414-1.064-1.207-2.009-2.213-3.812-.646-1.16-1.007-2.297-1.23-3.356l-.048-.223.178-.143c1.849-1.481 3.354-3.1 3.9-4.277-1.12-1.193-3.059-1.445-5.227-1.213l-.178.018-.125-.127c-1.155-1.177-2.59-1.78-4.054-1.79zm.65 2.754c.635-.01 1.196.431 1.348 1.06.18.74-.265 1.484-.992 1.66a1.367 1.367 0 0 1 -1.64-1.023c-.18-.74.264-1.484.991-1.66a1.33 1.33 0 0 1 .292-.037z"
+                id="front-bird"
+              />
+            </svg>
+            <figcaption>Loading...</figcaption>
+          </figure>
+        </section>
+      </main>
+    </span>
+
+    <script type="module">
+      import init from "./flappy_bird.js"; // Import the generated JS wrapper module
+      import emitSpacebarPress from "./emit_space_press.js";
+      import fitElementToScreen from "./fit_element_to_screen.js";
+
+      const app = Vue.createApp({
+        data() {
+          return {
+            showMenu: true /** @type {boolean} */,
+            isLoading: false /** @type {boolean} */,
+          };
+        },
+        methods: {
+          /**
+           * Initializes WASM module and sets up game canvas to full screen.
+           * @returns {Promise<void>}
+           */
+          async run() {
+            try {
+              this.isLoading = true;
+              await init(); // Wait for the WASM module to be initialized
+              const canvas = document.querySelector("[alt='Flappy Bird']");
+              // Respond to touch/click events
+              canvas.addEventListener("click", () => emitSpacebarPress(canvas));
+              canvas.addEventListener("touchstart", () =>
+                emitSpacebarPress(canvas)
+              );
+              // Resize canvas to fit screen
+              canvas.style.display = "block";
+              setTimeout(() => fitElementToScreen(canvas), 0);
+              window.addEventListener("resize", () =>
+                setTimeout(() => fitElementToScreen(canvas), 0)
+              );
+            } catch (error) {
+              console.error(error);
+            } finally {
+              this.$refs.main.style.display = "none";
+              this.isLoading = false;
+            }
+          },
+          /**
+           * Closes the game menu and runs the game.
+           * @returns {Promise<void>}
+           */
+          async play() {
+            try {
+              this.showMenu = false;
+              await this.run();
+            } catch (error) {
+              console.error(error);
+            }
+          },
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
 </html>
