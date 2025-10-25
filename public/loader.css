@@ -1,0 +1,66 @@
+#loader-container {
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+#loading-suspense-fallback {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  --light-color: #ececec;
+  --middle-color: #b2b2b2;
+  --dark-color: #787878;
+  --animation-duration: 0.5s;
+}
+
+@keyframes fade-front {
+  0%,
+  100% {
+    fill: var(--light-color);
+  }
+  33% {
+    fill: var(--dark-color);
+  }
+  66% {
+    fill: var(--middle-color);
+  }
+}
+
+@keyframes fade-middle {
+  0%,
+  100% {
+    fill: var(--middle-color);
+  }
+  33% {
+    fill: var(--light-color);
+  }
+  66% {
+    fill: var(--dark-color);
+  }
+}
+
+@keyframes fade-back {
+  0%,
+  100% {
+    fill: var(--dark-color);
+  }
+  33% {
+    fill: var(--middle-color);
+  }
+  66% {
+    fill: var(--light-color);
+  }
+}
+
+#front-bird {
+  animation: fade-front var(--animation-duration) infinite ease-in-out;
+}
+
+#middle-bird {
+  animation: fade-middle var(--animation-duration) infinite ease-in-out;
+}
+
+#back-bird {
+  animation: fade-back var(--animation-duration) infinite ease-in-out;
+}
