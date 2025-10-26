@@ -1,5 +1,6 @@
 MIT License
 
+Copyright © 2025-2035 Frederick Roman
 Copyright © 2025-2035 Homero Roman Roman
 Copyright (c) 2024 Biped-Potato
 
